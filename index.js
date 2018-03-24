@@ -1,10 +1,10 @@
 const {getBrands} = require('node-car-api');
 const {getModels} = require('node-car-api');
 const fs = require('fs');
-var async = require('async');
+const async = require('async');
 
-var listOfCars = [];
-var brand;
+var listCars = [];
+//var brand;
 
 async function getAllBrands(){
 	const brands = await getBrands();
@@ -18,7 +18,43 @@ async function getAllModels(string){
 	return models;
 }
 
-const brands = getAllBrands();
+function loopArray(res, callback){
+	async.each(res, createBrandObject);
+	callback();
+}
+
+function createBrandObject(name){
+	var brand = {
+			"name": name,
+			models: []
+	};
+	listCars.push(brand);
+}
+
+/*function updateList(brand){
+	listCars.push(brand);
+}*/
+
+function createJSON(brand){
+	var jstring = JSON.stringify(listCars, brand, "\t");
+	console.log(jstring);
+}
+
+function main(){
+	const brands = getAllBrands();
+	brands.then(function(res){
+		loopArray(res, createJSON);
+	})
+}
+
+main();
+
+
+
+
+
+
+/*const brands = getAllBrands();
 
 brands.then(function(res){
 	test(res, printEnd);
@@ -36,7 +72,7 @@ function printEnd(){
 
 function print(value){
 	console.log(value);
-}
+}*/
 /*async function main(){
 	const brands = getAllBrands();
 
