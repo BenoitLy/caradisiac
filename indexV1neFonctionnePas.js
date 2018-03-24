@@ -4,13 +4,10 @@ const fs = require('fs');
 const async = require('async');
 
 var listCars = [];
-//var brand;
 
 async function getAllBrands(){
 	const brands = await getBrands();
-	var bra = [];
-	bra = brands
-	return bra;
+	return brands;
 }
 
 async function getAllModels(string){
@@ -23,20 +20,29 @@ function loopArray(res, callback){
 	callback();
 }
 
-function createBrandObject(name){
+async function createBrandObject(name){
 	var brand = {
 			"name": name,
 			models: []
 	};
+	console.log(name);
+	const listModels = await getModels(name);
+	listModels.forEach(function(model){
+		console.log("pushing");
+		brand.models.push(model);
+	})
 	listCars.push(brand);
 }
 
-/*function updateList(brand){
+function updateList(brand){
+	console.log("updateList");
 	listCars.push(brand);
-}*/
+}
+
 
 function createJSON(brand){
 	var jstring = JSON.stringify(listCars, brand, "\t");
+	console.log("createJSON");
 	console.log(jstring);
 }
 
@@ -127,7 +133,7 @@ test.then(function(result){
 
 
 /*var elasticsearch = require('elasticsearch');
-var client = new elasticsearch.Client({  // default is fine for me, change as you see fit
+var client = new elasticsearch.Client({ 
     host: 'localhost:9292',
     log: 'trace'
 });
