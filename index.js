@@ -1,6 +1,10 @@
 const {getBrands} = require('node-car-api');
 const {getModels} = require('node-car-api');
 const fs = require('fs');
+var async = require('async');
+
+var listOfCars = [];
+var brand;
 
 async function getAllBrands(){
 	const brands = await getBrands();
@@ -16,14 +20,62 @@ async function getAllModels(string){
 
 const brands = getAllBrands();
 
-brands.then(function(result){
+brands.then(function(res){
+	test(res, printEnd);
+})
+
+function test(res, callback){
+	async.each(res, print);
+	callback();
+}
+
+
+function printEnd(){
+	console.log("|||||||||||||||||||||||||||");
+}
+
+function print(value){
+	console.log(value);
+}
+/*async function main(){
+	const brands = getAllBrands();
+
+	brands.then(function(result){
+		for(i = 0; i < result.length; i++){
+			brand = {
+				"name": result[i],
+				models: []
+			};
+			console.log(i + " : " + result[i]);
+		}
+		listOfCars.push(brand);
+	})
+}*/
+
+/*function createList(brand){
+	console.log("list : " + brand);
+	listOfCars.push(brand);
+}
+
+function printList(list){
+	console.log(list);
+}*/
+
+/*const test = main();
+test.then(function(result){
+	var jstr = JSON.stringify(list, brand, "\t");
+	console.log(jstr);
+})*/
+
+
+/*brands.then(function(result){
 	for(i = 0; i < result.length; i++){
 		const models = getAllModels(result[i]);
 		models.then(function(result){
 			console.log(result);
 		});
 	}
-})
+})*/
 
 
 /*const brands = getAllBrands(function(){
